@@ -339,3 +339,15 @@ Example
 ```
 
 Currency symbols (£, $, €, etc.) are only displayed to the user and are not stored.
+
+
+Team division
+
+Then simply divide the work:
+
+👤 Student 1
+add_expense
+👤 Student 2
+list_expenses
+👤 Student 3
+get_spending_summary
