@@ -7,6 +7,7 @@
   "scripts": {
     "start": "tsx src/index.ts",
     "dev": "tsx src/index.ts",
+    "check:schema": "tsx scripts/check-schema.ts",
     "inspect": "npx @modelcontextprotocol/inspector npx tsx src/index.ts"
   },
   "engines": {
