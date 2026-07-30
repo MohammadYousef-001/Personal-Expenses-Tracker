@@ -9,7 +9,7 @@ export const addExpenseInputSchema = z.object({
   category: z
     .string()
     .min(1)
-    .max(30)
+    .max(200)
     .describe("The expense category"),
 
   date: z
@@ -21,7 +21,7 @@ export const addExpenseInputSchema = z.object({
   description: z
     .string()
     .min(1)
-    .max(100)
+    .max(200)
     .optional()
     .describe("A short optional description of the expense"),
 });
@@ -37,7 +37,7 @@ export const listExpensesInputSchema = z.object({
   category: z
     .string()
     .min(1)
-    .max(30)
+    .max(200)
     .optional()
     .describe("The category to filter by"),
 });
