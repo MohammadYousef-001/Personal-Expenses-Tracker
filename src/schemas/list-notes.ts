@@ -1,5 +1,5 @@
 import { z } from "zod/v4";
-
+// Tool: list_notes
 export const listNotesInputSchema = z.object({
   folder: z
     .string()

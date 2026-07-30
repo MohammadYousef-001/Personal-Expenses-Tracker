@@ -1,5 +1,5 @@
 import { z } from "zod/v4";
-
+// Tool: add_note
 export const addNoteInputSchema = z.object({
   title: z
     .string()

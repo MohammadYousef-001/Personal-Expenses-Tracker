@@ -1,5 +1,5 @@
 import { z } from "zod/v4";
-
+// Tool: search_notes
 export const searchNotesInputSchema = z.object({
   query: z
     .string()
