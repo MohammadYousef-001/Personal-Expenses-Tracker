@@ -10,7 +10,7 @@ A Model Context Protocol (MCP) server for recording personal expenses, viewing f
 - Validate tool inputs with Zod for clear, consistent requests.
 - Run locally as an MCP server over standard input/output (stdio).
 
-## Available tools
+## Available tools 
 
 | Tool | Description | Inputs |
 | --- | --- | --- |
