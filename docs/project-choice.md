@@ -1,39 +1,28 @@
-# Project choice
+# Project Choice
 
-> Complete in Week 2. One sentence only for the pitch line — expand details below if needed.
+## Pitch
 
-## Pitch (required)
+I am building a **Personal Expense Tracker MCP** for **individuals and small business owners** so that **they can record, organise, monitor, and analyse their expenses through an AI assistant**.
 
-I am building **X** for **Y** so that **Z**.
+## Starter Selected
 
-<!-- Example:
-I am building a Notes & FAQ Search MCP for classmates so that they can ask an AI host to find answers in our course notes without leaving the chat.
--->
+- [x] Personal Expense Tracker
 
-## Starter selected
-
-- [ ] Notes & FAQ Search
-- [ ] Personal Expense Tracker
-- [ ] To-Do List
-- [ ] Weather Briefing
-- [ ] Quote of the Day
-- [ ] Other (mentor-approved): _______________
-
-## Scoring (1–5)
+## Scoring
 
 | Criterion | Score | Notes |
 | --- | --- | --- |
-| Personal interest |  |  |
-| Offline / free-API demoability |  |  |
-| No paid API keys required |  |  |
-| Fits in four remaining build weeks |  |  |
+| Personal interest | 5 | The project relates to finance and provides a practical solution for managing expenses. |
+| Offline / free-API demoability | 5 | The project stores data locally and does not depend on external APIs. |
+| No paid API keys required | 5 | All core features can operate without paid API services. |
+| Fits in four remaining build weeks | 5 | The project scope is realistic and manageable within the available development period. |
 
-## Why this one (3–5 sentences)
+## Why This One
 
-<!-- Write here -->
+The Personal Expense Tracker MCP is a practical project that demonstrates how an AI assistant can interact with structured financial data through MCP tools. It allows users to record expenses, retrieve stored records, and generate spending summaries without requiring a full web or mobile application. The project also demonstrates important concepts such as tool design, Zod input validation, local data storage, filtering, and structured outputs. Optional features such as budget planning and report exporting can be added if sufficient development time remains.
 
-## Mentor notes
+## Team Members
 
-- Reviewed by:
-- Date:
-- Decision: approved / revise
+- Mohammad Yousef
+- Baraa Mohsen
+- Rafeef Sholy
