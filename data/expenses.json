@@ -1,23 +1,23 @@
 [
   {
     "id": "expense-001",
-    "description": "Groceries",
     "amount": 45,
     "category": "Food",
-    "date": "2026-08-01"
+    "date": "2026-08-01",
+    "description": "Groceries"
   },
   {
     "id": "expense-002",
-    "description": "Taxi",
     "amount": 20,
     "category": "Transport",
-    "date": "2026-08-01"
+    "date": "2026-08-01",
+    "description": "Taxi"
   },
   {
     "id": "expense-003",
-    "description": "Internet bill",
     "amount": 100,
     "category": "Bills",
-    "date": "2026-07-30"
+    "date": "2026-08-02",
+    "description": "Internet bill"
   }
 ]
