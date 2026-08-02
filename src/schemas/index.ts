@@ -49,4 +49,26 @@ export const getSpendingSummaryInputSchema = z.object({
     .max(7)
     .optional()
     .describe("The month to summarise in YYYY-MM format"),
+
+
+    
 });
+
+//csv row validation schema 
+//This checks that every expense loaded from the CSV has:
+//id amount category date description
+export const expenseRowSchema = z.object({
+  id: z.string().min(1),
+
+  amount: z.coerce.number().positive(),
+
+  category: z.string().min(1).max(30),
+
+  date: z
+    .string()
+    .regex(/^\d{4}-\d{2}-\d{2}$/, "Date must use YYYY-MM-DD format"),
+
+  description: z.string(),
+});
+
+export type ExpenseRow = z.infer<typeof expenseRowSchema>;
