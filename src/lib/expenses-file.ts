@@ -1,3 +1,5 @@
+
+//the shared bridge between your tools and the real CSV data
 import { readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 
