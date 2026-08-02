@@ -1,8 +1,11 @@
 import type { McpServer } from "@modelcontextprotocol/server";
-
+import { readExpenses } from "../lib/expenses-file.js";
+import { calculateSpendingSummary } from "../lib/spending-summary-data.js";
 import { getSpendingSummaryInputSchema } from "../schemas/index.js";
 
-export function registerGetSpendingSummaryTool(server: McpServer): void {
+export function registerGetSpendingSummaryTool(
+  server: McpServer,
+): void {
   server.registerTool(
     "get_spending_summary",
     {
@@ -10,14 +13,56 @@ export function registerGetSpendingSummaryTool(server: McpServer): void {
       inputSchema: getSpendingSummaryInputSchema,
     },
     async ({ month }) => {
-      return {
-        content: [
-          {
-            type: "text",
-            text: `spending summary created for month ${month}`,
-          },
-        ],
-      };
+      try {
+        const expenses = await readExpenses();
+
+        const filteredExpenses =
+          month === undefined
+            ? expenses
+            : expenses.filter((expense) =>
+                expense.date.startsWith(month),
+              );
+
+        const summary =
+          calculateSpendingSummary(filteredExpenses);
+
+        const result = {
+          month: month ?? "all",
+          ...summary,
+          message:
+            filteredExpenses.length === 0
+              ? "no matching expenses found"
+              : "spending summary created",
+        };
+
+        return {
+          content: [
+            {
+              type: "text",
+              text: JSON.stringify(result, null, 2),
+            },
+          ],
+        };
+      } catch (error) {
+        const reason =
+          error instanceof Error
+            ? error.message
+            : "unknown error";
+
+        console.error(
+          `get_spending_summary failed: ${reason}`,
+        );
+
+        return {
+          content: [
+            {
+              type: "text",
+              text: "could not create spending summary",
+            },
+          ],
+          isError: true,
+        };
+      }
     },
   );
 }
