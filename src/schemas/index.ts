@@ -58,7 +58,7 @@ export const getSpendingSummaryInputSchema = z.object({
 //This checks that every expense loaded from the CSV has:
 //id amount category date description
 export const expenseRowSchema = z.object({
-  id: z.string().min(1),
+  id: z.string().min(1).optional(),
 
   amount: z.coerce.number().positive(),
 
