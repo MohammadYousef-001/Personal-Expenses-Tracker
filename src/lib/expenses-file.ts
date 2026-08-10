@@ -1,4 +1,3 @@
-
 //the shared bridge between your tools and the real CSV data
 import { readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
@@ -11,6 +10,8 @@ import {
   type ExpenseRow,
 } from "../schemas/index.js";
 
+// Fixed, non-configurable path — no tool ever passes in a custom csvPath,
+// which is what prevents path traversal here rather than validating one.
 export const expensesFilePath = path.resolve(
   process.cwd(),
   "data",
@@ -18,7 +19,17 @@ export const expensesFilePath = path.resolve(
 );
 
 export async function readExpenses(): Promise<ExpenseRow[]> {
-  const csvText = await readFile(expensesFilePath, "utf-8");
+  let csvText: string;
+
+  try {
+    csvText = await readFile(expensesFilePath, "utf-8");
+  } catch (error) {
+    // Missing file is a valid "no data yet" state, not a crash.
+    if (error instanceof Error && "code" in error && error.code === "ENOENT") {
+      return [];
+    }
+    throw error;
+  }
 
   const parsedRows: unknown[] = parse(csvText, {
     columns: true,
