@@ -57,7 +57,7 @@ export function registerAddExpenseTool(server: McpServer): void {
           content: [
             {
               type: "text",
-              text: `could not add expense: ${reason}`,
+              text: "could not add expense",
             },
           ],
           isError: true,
