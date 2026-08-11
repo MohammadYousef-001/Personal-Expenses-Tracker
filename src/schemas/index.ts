@@ -14,8 +14,7 @@ export const addExpenseInputSchema = z.object({
 
   date: z
     .string()
-    .min(10)
-    .max(10)
+    .regex(/^\d{4}-\d{2}-\d{2}$/, "Date must use YYYY-MM-DD format")
     .describe("The expense date in YYYY-MM-DD format"),
 
   description: z
@@ -29,8 +28,7 @@ export const addExpenseInputSchema = z.object({
 export const listExpensesInputSchema = z.object({
   month: z
     .string()
-    .min(7)
-    .max(7)
+    .regex(/^\d{4}-\d{2}$/, "Month must use YYYY-MM format")
     .optional()
     .describe("The month to filter by in YYYY-MM format"),
 
@@ -45,8 +43,7 @@ export const listExpensesInputSchema = z.object({
 export const getSpendingSummaryInputSchema = z.object({
   month: z
     .string()
-    .min(7)
-    .max(7)
+    .regex(/^\d{4}-\d{2}$/, "Month must use YYYY-MM format")
     .optional()
     .describe("The month to summarise in YYYY-MM format"),
 
