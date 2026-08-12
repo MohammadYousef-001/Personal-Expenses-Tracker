@@ -43,14 +43,13 @@ export const listExpensesInputSchema = z.object({
 });
 
 export const getSpendingSummaryInputSchema = z.object({
-  month: z
-    .string()
-    .min(7)
-    .max(7)
-    .optional()
-    .describe("The month to summarise in YYYY-MM format"),
-
-
+month: z
+  .string()
+  .min(7)
+  .max(7)
+  .regex(/^\d{4}-(0[1-9]|1[0-2])$/, "Month must use YYYY-MM format")
+  .optional()
+  .describe("The month to summarise in YYYY-MM format"),
     
 });
 
