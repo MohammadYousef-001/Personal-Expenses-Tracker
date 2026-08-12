@@ -29,7 +29,7 @@ The project currently does not use login tokens, API keys, or bank credentials.
 ## Top 5 Risks
 
 ### 1. Invalid date or month input
-The current schemas check the length of dates and months, but the format can be checked more strictly. Bad values may cause wrong filters or summaries.
+The current schemas check the length of dates and months, but the format can be checked more strictly. Bad values may cause wrong filters or summaries.For get_spending_summary, an invalid month value could cause incorrect filtering and an inaccurate spending summary
 
 ### 2. Very large amount input
 The amount must be positive, but there is no maximum value. Very large values may create unrealistic spending totals.
@@ -46,6 +46,7 @@ The current P0 tools do not use the network. However, a future tool that accepts
 ## Mitigations This Week
 
 - Improve Zod validation so dates only accept `YYYY-MM-DD` and months only accept `YYYY-MM`.
+- For get_spending_summary, getSpendingSummaryInputSchema now validates the optional month and only accepts valid YYYY-MM values with months from 01 to 12.
 - Add a reasonable maximum value for expense amounts.
 - Keep `list_expenses` responses limited to 10 expenses and avoid returning unnecessary data.
 - Continue validating every CSV row with `expenseRowSchema` before using it.
