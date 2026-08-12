@@ -1,10 +1,7 @@
 import type { McpServer } from "@modelcontextprotocol/server";
 
 import { createExpense } from "../lib/add-expense-data.js";
-import {
-  readExpenses,
-  writeExpenses,
-} from "../lib/expenses-file.js";
+import { appendExpense } from "../lib/expenses-file.js";
 import { addExpenseInputSchema } from "../schemas/index.js";
 
 export function registerAddExpenseTool(server: McpServer): void {
@@ -16,19 +13,14 @@ export function registerAddExpenseTool(server: McpServer): void {
     },
     async ({ amount, category, date, description }) => {
       try {
-        const expenses = await readExpenses();
-
         const newExpense = createExpense(
-          expenses,
           amount,
           category,
           date,
           description,
         );
 
-        expenses.push(newExpense);
-
-        await writeExpenses(expenses);
+        await appendExpense(newExpense);
 
         return {
           content: [

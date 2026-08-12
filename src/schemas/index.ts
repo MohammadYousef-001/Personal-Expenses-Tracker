@@ -15,6 +15,12 @@ export const addExpenseInputSchema = z.object({
   date: z
     .string()
     .regex(/^\d{4}-\d{2}-\d{2}$/, "Date must use YYYY-MM-DD format")
+    .refine((date) => {
+      const parsedDate = new Date(`${date}T00:00:00Z`);
+
+      return !Number.isNaN(parsedDate.getTime())
+        && parsedDate.toISOString().slice(0, 10) === date;
+    }, "Date must be a valid calendar date")
     .describe("The expense date in YYYY-MM-DD format"),
 
   description: z
