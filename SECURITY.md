@@ -17,6 +17,8 @@ Do not open a public GitHub Issue for security reports - email the mentor direct
 This section summarizes what was allowlisted, validated, or capped during the Week 4 hardening pass. Full details are in docs/threat-model.md.
 
 - Validated: all add_expense fields now use strict Zod schemas, category is a fixed enum, date and month use strict regex patterns, and amount and description have upper bounds.
+-  Spending summary validation: get_spending_summary validates its optional month input with Zod and only accepts YYYY-MM values with months from 01 to 12.
+  -  Spending summary errors: get_spending_summary returns a short user-facing error message while detailed failure information is only logged internally.
 - Capped: list_expenses returns at most 10 rows per call, with a truncated flag so the caller knows if more results exist.
 - Path-restricted: all file access is hardcoded to data/expenses.csv, no tool accepts a custom file path, which removes path traversal as an attack surface entirely.
 - Graceful failure: missing or empty CSV data returns an empty result instead of crashing, invalid input is rejected by Zod before it reaches any file operation.
