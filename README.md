@@ -73,6 +73,7 @@ Example `add_expense` input:
   "description": "Weekly shop"
 }
 ```
+For full example conversations showing tool calls and expected answers, see [examples/conversations.md](examples/conversations.md)
 
 ## Scripts
 
