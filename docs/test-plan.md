@@ -21,13 +21,13 @@ All test cases passed
 | T01 | add_expense | make sure `data/expenses.csv` exists | valid amount category date and description | a new expense is added successfully to the CSV file | PASS | [evidence PDF](evidence/evidence.pdf) |
 | T02 | add_expense | normal CSV file | amount is `-25` | the request is rejected because the amount must be positive | PASS | [evidence PDF](evidence/evidence.pdf) |
 | T03 | add_expense | normal CSV file | date is `2026-99-99` | the request is rejected because the date is not a real calendar date | PASS | [evidence PDF](evidence/evidence.pdf) |
-| T04 | list_expenses | CSV contains expense records | `{}` | the tool returns the default list of expenses without crashing | PASS | [evidence PDF](evidence/evidence.pdf) |
+| T04 | add_expense | normal CSV file | leave the required fields empty | the request is rejected by input validation and no expense is added | PASS | [evidence PDF](evidence/evidence.pdf) |
 | T05 | list_expenses | CSV contains groceries and other categories | category is `groceries` | only matching grocery expenses are returned | PASS | tested successfully in MCP Inspector |
 | T06 | list_expenses | normal CSV file | month is `2026-99` | the request is rejected because the month is invalid | PASS | tested successfully in MCP Inspector |
 | T07 | get_spending_summary | CSV contains expenses for the selected month | month is `2026-08` | the tool returns the correct total amount expense count and category totals | PASS | tested successfully in MCP Inspector |
 | T08 | get_spending_summary | normal CSV file | month is `2026-99` | the request is rejected because the month is invalid | PASS | tested successfully in MCP Inspector |
 | T09 | list_expenses | temporarily use an empty CSV with the correct header | `{}` | the tool handles empty data safely and does not crash | PASS | tested successfully in MCP Inspector |
-| T10 | MCP server | disconnect the local MCP server to simulate an offline server | try to access or call a P0 tool from Inspector | P0 tools are unavailable while the MCP server is offline and no incorrect result is returned | PASS | offline server test completed successfully |
+| T10 | MCP server | disconnect the local MCP server to simulate an offline server | try to access a P0 tool from Inspector | P0 tools are unavailable while the MCP server is offline | PASS | offline server test completed successfully |
 
 ## Happy Path Inputs
 
@@ -141,7 +141,27 @@ Result
 
 The invalid date was rejected
 
-The real calendar date validation was added during the Week 4 hardening work
+Evidence
+
+[evidence PDF](evidence/evidence.pdf)
+
+### add_expense empty required fields
+
+Input
+
+```json
+{}
+```
+
+Expected
+
+The request should be rejected because the required fields are missing
+
+Result
+
+`PASS`
+
+The request was rejected by input validation and no expense was added
 
 Evidence
 
@@ -215,11 +235,11 @@ The current P0 tools do not depend on an external network API
 
 The local MCP server was disconnected to simulate an offline server
 
-After the server was disconnected MCP Inspector could no longer access or call the P0 tools
+After the server was disconnected MCP Inspector could no longer access the P0 tools
 
 Expected
 
-The tools should be unavailable while the MCP server is offline and no incorrect result should be returned
+The tools should be unavailable while the MCP server is offline
 
 Result
 
@@ -231,13 +251,18 @@ The MCP server was reconnected after the test
 
 ## Evidence
 
-Evidence was captured from MCP Inspector for test cases T01 to T04
+Evidence was captured from MCP Inspector for these test cases
+
+- T01 successful `add_expense` happy path
+- T02 negative amount validation rejection
+- T03 impossible calendar date validation rejection
+- T04 empty required fields validation rejection
 
 The screenshots for these test cases are included in one PDF file
 
 [Open the Week 5 manual test evidence PDF](evidence/evidence.pdf)
 
-Test cases T05 to T10 were also executed manually in MCP Inspector and marked PASS in the test table
+The remaining test cases were also executed manually in MCP Inspector and marked PASS in the test table
 
 ## Fixture Reset
 
