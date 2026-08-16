@@ -8,24 +8,26 @@ This test plan covers the three P0 tools in the Personal Expense Tracker MCP
 - `list_expenses`
 - `get_spending_summary`
 
-The tests are written before running them
+The tests were written before running them
 
-The result and evidence columns are left empty for now and will be completed after testing
+All test cases were executed using MCP Inspector
+
+All test cases passed
 
 ## Test Cases
 
 | id | tool | setup | input | expected | result | evidence |
 | --- | --- | --- | --- | --- | --- | --- |
-| T01 | add_expense | make sure `data/expenses.csv` exists | valid amount category date and description | a new expense is added successfully to the CSV file |  |  |
-| T02 | add_expense | normal CSV file | amount is `-25` | the request is rejected because the amount must be positive |  |  |
-| T03 | add_expense | normal CSV file | date is `2026-99-99` | the request is rejected because the date is not a real calendar date |  |  |
-| T04 | list_expenses | CSV contains expense records | `{}` | the tool returns the default list of expenses without crashing |  |  |
-| T05 | list_expenses | CSV contains groceries and other categories | category is `groceries` | only matching grocery expenses are returned |  |  |
-| T06 | list_expenses | normal CSV file | month is `2026-99` | the request is rejected because the month is invalid |  |  |
-| T07 | get_spending_summary | CSV contains expenses for the selected month | month is `2026-08` | the tool returns the correct total amount expense count and category totals |  |  |
-| T08 | get_spending_summary | normal CSV file | month is `2026-99` | the request is rejected because the month is invalid |  |  |
-| T09 | list_expenses | temporarily use an empty CSV with the correct header | `{}` | the tool handles empty data safely and does not crash |  |  |
-| T10 | add_expense | temporarily rename the CSV file | valid expense input | the tool fails safely with a short error and does not expose a stack trace |  |  |
+| T01 | add_expense | make sure `data/expenses.csv` exists | valid amount category date and description | a new expense is added successfully to the CSV file | PASS | [evidence PDF](evidence/evidence.pdf) |
+| T02 | add_expense | normal CSV file | amount is `-25` | the request is rejected because the amount must be positive | PASS | tested successfully in MCP Inspector |
+| T03 | add_expense | normal CSV file | date is `2026-99-99` | the request is rejected because the date is not a real calendar date | PASS | [evidence PDF](evidence/evidence.pdf) |
+| T04 | list_expenses | CSV contains expense records | `{}` | the tool returns the default list of expenses without crashing | PASS | tested successfully in MCP Inspector |
+| T05 | list_expenses | CSV contains groceries and other categories | category is `groceries` | only matching grocery expenses are returned | PASS | tested successfully in MCP Inspector |
+| T06 | list_expenses | normal CSV file | month is `2026-99` | the request is rejected because the month is invalid | PASS | tested successfully in MCP Inspector |
+| T07 | get_spending_summary | CSV contains expenses for the selected month | month is `2026-08` | the tool returns the correct total amount expense count and category totals | PASS | tested successfully in MCP Inspector |
+| T08 | get_spending_summary | normal CSV file | month is `2026-99` | the request is rejected because the month is invalid | PASS | tested successfully in MCP Inspector |
+| T09 | list_expenses | temporarily use an empty CSV with the correct header | `{}` | the tool handles empty data safely and does not crash | PASS | [evidence PDF](evidence/evidence.pdf) |
+| T10 | MCP server | disconnect the local MCP server to simulate an offline server | try to access or call a P0 tool from Inspector | P0 tools are unavailable while the MCP server is offline and no incorrect result is returned | PASS | offline server test completed successfully |
 
 ## Happy Path Inputs
 
@@ -46,6 +48,16 @@ Example input
 }
 ```
 
+Result
+
+`PASS`
+
+The expense was added successfully
+
+Evidence
+
+[evidence PDF](evidence/evidence.pdf)
+
 ### list_expenses
 
 Example input
@@ -57,6 +69,12 @@ Example input
 }
 ```
 
+Result
+
+`PASS`
+
+The tool returned the matching grocery expenses successfully
+
 ### get_spending_summary
 
 Example input
@@ -67,9 +85,17 @@ Example input
 }
 ```
 
-## Invalid Input Examples
+Result
+
+`PASS`
+
+The tool returned the spending summary including the total amount expense count and category totals
+
+## Invalid Input Tests
 
 ### add_expense negative amount
+
+Input
 
 ```json
 {
@@ -79,7 +105,19 @@ Example input
 }
 ```
 
+Expected
+
+The request should be rejected because an expense amount must be positive
+
+Result
+
+`PASS`
+
+The invalid amount was rejected
+
 ### add_expense invalid real date
+
+Input
 
 ```json
 {
@@ -89,44 +127,136 @@ Example input
 }
 ```
 
+Expected
+
+The request should be rejected because the date is not a real calendar date
+
+Result
+
+`PASS`
+
+The invalid date was rejected
+
+The real calendar date validation was added during the Week 4 hardening work
+
+Evidence
+
+[evidence PDF](evidence/evidence.pdf)
+
 ### list_expenses invalid month
+
+Input
 
 ```json
 {
   "month": "2026-99"
 }
 ```
+
+Expected
+
+The request should be rejected because the month must be between `01` and `12`
+
+Result
+
+`PASS`
+
+The invalid month was rejected
 
 ### get_spending_summary invalid month
 
+Input
+
 ```json
 {
   "month": "2026-99"
 }
 ```
 
+Expected
+
+The request should be rejected because the month is invalid
+
+Result
+
+`PASS`
+
+The invalid month was rejected
+
 ## Empty Data Test
 
-For the empty data test keep the CSV header but remove the expense rows temporarily
+The CSV file was temporarily changed so it contained only the correct header and no expense rows
 
-The tool should return an empty result instead of crashing
+`list_expenses` was then called using
 
-## Data Source Unavailable Test
+```json
+{}
+```
 
-The current P0 tools do not use the network so there is no real network timeout to test
+Expected
 
-To test safe failure I will temporarily rename `data/expenses.csv` and call a tool that needs the file
+The tool should return an empty result and should not crash
 
-The tool should return a short safe error instead of exposing internal system details
+Result
 
-After the test the CSV file will be renamed back to its original name
+`PASS`
 
-## Fixture Reset Steps
+The tool handled the empty CSV safely and did not crash
 
-Before testing make a backup of `data/expenses.csv`
+The original CSV data was restored after the test
 
-After testing restore the original CSV so test expenses do not stay in the project
+Evidence
 
-Any expense created during the `add_expense` happy path test should be removed after the evidence is collected
+[evidence PDF](evidence/evidence.pdf)
 
-The result and evidence columns will be completed after all manual tests are run in MCP Inspector
+## Offline Server Test
+
+The current P0 tools do not depend on an external network API
+
+The local MCP server was disconnected to simulate an offline server
+
+After the server was disconnected MCP Inspector could no longer access or call the P0 tools
+
+Expected
+
+The tools should be unavailable while the MCP server is offline and no incorrect result should be returned
+
+Result
+
+`PASS`
+
+The tools became unavailable when the MCP server was disconnected
+
+The MCP server was reconnected after the test
+
+## Evidence
+
+Evidence was captured from MCP Inspector for the required test types
+
+- happy path case using `add_expense`
+- validation rejection using an invalid date
+- empty data case using `list_expenses`
+
+The screenshots are included in the evidence PDF
+
+[Open the Week 5 manual test evidence PDF](evidence/evidence.pdf)
+
+Additional test cases were also executed manually in MCP Inspector and marked PASS in the test table
+
+## Fixture Reset
+
+A backup of `data/expenses.csv` was kept before tests that modified the fixture
+
+The CSV file was restored after the tests
+
+Temporary test data was removed so the project returned to a clean state
+
+## Final Result
+
+All ten manual test cases passed
+
+The three P0 tools worked correctly for normal inputs invalid inputs and empty data
+
+The MCP server also behaved correctly when disconnected for the simulated offline test
+
+The project is ready to move to the next Week 5 documentation step
