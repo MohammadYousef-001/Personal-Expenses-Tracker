@@ -1,5 +1,5 @@
 //the shared bridge between your tools and the real CSV data
-import { readFile, writeFile } from "node:fs/promises";
+import { appendFile, readFile } from "node:fs/promises";
 import path from "node:path";
 
 import { parse } from "csv-parse/sync";
@@ -40,11 +40,10 @@ export async function readExpenses(): Promise<ExpenseRow[]> {
   return parsedRows.map((row) => expenseRowSchema.parse(row));
 }
 
-export async function writeExpenses(
-  expenses: ExpenseRow[],
+export async function appendExpense(
+  expense: ExpenseRow,
 ): Promise<void> {
-  const csvText = stringify(expenses, {
-    header: true,
+  const csvText = stringify([expense], {
     columns: [
       "id",
       "amount",
@@ -54,5 +53,5 @@ export async function writeExpenses(
     ],
   });
 
-  await writeFile(expensesFilePath, csvText, "utf-8");
+  await appendFile(expensesFilePath, csvText, "utf-8");
 }
