@@ -2,3 +2,5 @@ id,amount,category,date,description
 expense-001,45,Food,2026-08-01,Groceries
 expense-002,20,Transport,2026-08-01,Taxi
 expense-003,100,Bills,2026-08-02,Internet bill
+expense-004,25,Food,2026-08-11,ddd
+expense-005,25,Bills,2026-99-99,ss
