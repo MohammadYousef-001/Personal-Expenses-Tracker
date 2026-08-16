@@ -14,6 +14,10 @@ export const addExpenseInputSchema = z.object({
 
   date: z
     .string()
+<<<<<<< HEAD
+    .min(10)
+    .max(10)
+=======
     .regex(/^\d{4}-\d{2}-\d{2}$/, "Date must use YYYY-MM-DD format")
     .refine((date) => {
       const parsedDate = new Date(`${date}T00:00:00Z`);
@@ -21,6 +25,7 @@ export const addExpenseInputSchema = z.object({
       return !Number.isNaN(parsedDate.getTime())
         && parsedDate.toISOString().slice(0, 10) === date;
     }, "Date must be a valid calendar date")
+>>>>>>> origin/week-4-harden-mohammad
     .describe("The expense date in YYYY-MM-DD format"),
 
   description: z
@@ -34,7 +39,8 @@ export const addExpenseInputSchema = z.object({
 export const listExpensesInputSchema = z.object({
   month: z
     .string()
-    .regex(/^\d{4}-\d{2}$/, "Month must use YYYY-MM format")
+    .min(7)
+    .max(7)
     .optional()
     .describe("The month to filter by in YYYY-MM format"),
 
@@ -47,13 +53,13 @@ export const listExpensesInputSchema = z.object({
 });
 
 export const getSpendingSummaryInputSchema = z.object({
-  month: z
-    .string()
-    .regex(/^\d{4}-\d{2}$/, "Month must use YYYY-MM format")
-    .optional()
-    .describe("The month to summarise in YYYY-MM format"),
-
-
+month: z
+  .string()
+  .min(7)
+  .max(7)
+  .regex(/^\d{4}-(0[1-9]|1[0-2])$/, "Month must use YYYY-MM format")
+  .optional()
+  .describe("The month to summarise in YYYY-MM format"),
     
 });
 
