@@ -334,9 +334,8 @@ This can use
 
 ```text
 get_spending_summary
-```
-
----
+```For complete example conversations with expected tool calls and final answers:
+examples/conversations.md---
 
 ## Input Validation
 
