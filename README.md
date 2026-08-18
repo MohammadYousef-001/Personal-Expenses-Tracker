@@ -534,7 +534,13 @@ The test evidence is available in
 
 ```text
 docs/evidence/evidence.pdf
+
+
+Additional `get_spending_summary` evidence from MCP Inspector is available in:
+
+
 ```
+docs/evidence/rafeef-spending-summary-evidence.pdf
 
 All manual test cases were executed using MCP Inspector
 
