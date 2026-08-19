@@ -53,5 +53,29 @@ export async function appendExpense(
     ],
   });
 
-  await appendFile(expensesFilePath, csvText, "utf-8");
+  // csv-stringify appends a trailing newline after THIS row, but it has no
+  // idea whether the file we're appending to already ends in one. If the
+  // last existing line is missing its trailing newline, appendFile glues
+  // our new row directly onto the end of it — merging two 5-column rows
+  // into a single malformed line (this is exactly what caused the
+  // "Invalid Record Length: columns length is 5, got 9" error). So we
+  // check first and insert a newline ourselves if needed.
+  let needsLeadingNewline = false;
+
+  try {
+    const existing = await readFile(expensesFilePath, "utf-8");
+    needsLeadingNewline = existing.length > 0 && !existing.endsWith("\n");
+  } catch (error) {
+    // File doesn't exist yet — appendFile will create it fresh, nothing
+    // to guard against here.
+    if (!(error instanceof Error && "code" in error && error.code === "ENOENT")) {
+      throw error;
+    }
+  }
+
+  await appendFile(
+    expensesFilePath,
+    (needsLeadingNewline ? "\n" : "") + csvText,
+    "utf-8",
+  );
 }
