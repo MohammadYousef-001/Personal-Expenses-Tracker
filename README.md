@@ -334,9 +334,8 @@ This can use
 
 ```text
 get_spending_summary
-```
-
----
+```For complete example conversations with expected tool calls and final answers:
+examples/conversations.md---
 
 ## Input Validation
 
@@ -534,7 +533,13 @@ The test evidence is available in
 
 ```text
 docs/evidence/evidence.pdf
+
+
+Additional `get_spending_summary` evidence from MCP Inspector is available in:
+
+
 ```
+docs/evidence/rafeef-spending-summary-evidence.pdf
 
 All manual test cases were executed using MCP Inspector
 

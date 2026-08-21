@@ -258,6 +258,19 @@ Evidence was captured from MCP Inspector for these test cases
 - T03 impossible calendar date validation rejection
 - T04 empty required fields validation rejection
 
+### get_spending_summary Evidence — Rafeef
+
+The `get_spending_summary` tool was manually tested in MCP Inspector for the following cases:
+
+- T07 Happy path using month `2026-08` — PASS
+- T08 Invalid month using `2026-99` — PASS
+- Additional empty-result test using month `2026-12` — PASS
+
+The empty-result test returned `totalAmount: 0`, `expenseCount: 0`, an empty `categoryTotals`, and the message `no matching expenses found`.
+
+[Open get_spending_summary test evidence PDF](./evidence/rafeef-spending-summary-evidence.pdf)
+
+docs/evidence/rafeef-spending-summary-evidence.pdf
 The screenshots for these test cases are included in one PDF file
 
 [Open the Week 5 manual test evidence PDF](evidence/evidence.pdf)
