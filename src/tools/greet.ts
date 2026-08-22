@@ -19,6 +19,11 @@ export function registerGreetTool(server: McpServer): void {
       description:
         "return a greeting message using the input name from the user",
       inputSchema: greetInputSchema, //call the schema we created in greet.ts to validate the input
+      annotations: {
+        readOnlyHint: true,
+        destructiveHint: false,
+        openWorldHint: false,
+      },
     },
     async ({ name }) => { //must be same variable name in file greet.ts and greet.js
       return {
