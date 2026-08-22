@@ -1,9 +1,8 @@
-import { McpServer } from "@modelcontextprotocol/server";
+﻿import { McpServer } from "@modelcontextprotocol/server";
 
 import { registerAddExpenseTool } from "./tools/add-expense.js";
 import { registerDeleteExpenseTool } from "./tools/delete-expense.js";
 import { registerGetSpendingSummaryTool } from "./tools/get-spending-summary.js";
-import { registerGreetTool } from "./tools/greet.js";
 import { registerListExpensesTool } from "./tools/list-expenses.js";
 import { registerUpdateExpenseTool } from "./tools/update-expense.js";
 
@@ -14,7 +13,6 @@ export function createServer(): McpServer {
     version: "0.1.0",
   });
 
-  registerGreetTool(server);
   registerAddExpenseTool(server);
   registerUpdateExpenseTool(server);
   registerDeleteExpenseTool(server);

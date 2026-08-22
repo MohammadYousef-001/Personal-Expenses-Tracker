@@ -559,6 +559,9 @@ The main goal is to provide simple MCP tools for local expense tracking
 
 ## License
 
-No open source license has been added to this project yet
+This project uses the MIT License
+
+See [LICENSE](LICENSE)
 
 This project was created for educational and internship work
+

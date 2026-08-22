@@ -1,4 +1,4 @@
-import { z } from "zod/v4";
+﻿import { z } from "zod/v4";
 
 export const MAX_EXPENSE_AMOUNT = 1_000_000;
 
