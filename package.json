@@ -2,7 +2,7 @@
   "name": "mcprepo",
   "version": "0.1.0",
   "private": true,
-  "description": "NextFlows Academy starter — build an MCP server in TypeScript (Weeks 1–6)",
+  "description": "A secure local MCP server for tracking personal expenses in CSV.",
   "type": "module",
   "scripts": {
     "start": "tsx src/index.ts",
@@ -18,8 +18,8 @@
   "keywords": [
     "mcp",
     "model-context-protocol",
-    "nextflows",
-    "academy"
+    "typescript",
+    "expenses"
   ],
   "license": "MIT",
   "dependencies": {
