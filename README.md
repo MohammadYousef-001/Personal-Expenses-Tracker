@@ -90,4 +90,6 @@ This project focuses on a simple, single-user expense-tracking workflow. It does
 
 ## License
 
-Licensed under the [MIT License](LICENSE).
+## License
+
+MIT — see [LICENSE](LICENSE) for details
