@@ -1,69 +1,20 @@
 # Personal Expense Tracker MCP - Demo Script
 
-This guide gives you a clear five-minute plan. Read the **Say** sections aloud and follow the action steps in order.
-
-## 0:40-1:10 - Architecture
-
-MCP Client
-→ Zod Validation
-→ Expense Tool
-→ Data Logic
-→ data/expenses.csv
-
-The deck has exactly five slides:
-
-1. Title
-2. Problem
-3. Architecture
-4. Tools
-5. Next steps and questions
-
-## Before You Start
-
-Complete this checklist before the audience arrives:
-
-1. Open the project folder.
-2. Run `npm install` before the event.
-3. Run `npm test` and confirm that all tests pass.
-4. Run `npm run inspect` and keep the terminal open.
-5. Connect MCP Inspector to the server.
-6. Open the Tools section and confirm that all five tools are visible.
-7. Keep `examples/conversations.md` open so you can copy the exact prompts.
-8. Open the slides on slide 1.
-9. Close unrelated windows and notifications.
-10. Prepare a five-minute timer.
-
-Do not change the code during the demo. The goal is to show the working project, not to explain every source file.
-
 ## 0:00-0:40 - Problem
 
-### Show
+Hello. This is my Personal Expense Tracker MCP server.
 
-Start on slide 1. Move to slide 2 after the first two sentences.
+People often keep expenses in notes or messages. This makes them difficult to find, manage, and summarize.
 
-### Say
+The Personal Expense Tracker gives an AI model five focused tools for storing and reviewing expenses.
 
-> Hello. This is my Personal Expense Tracker MCP server. It gives an AI assistant five focused tools for working with personal expenses.
->
-> People often keep expenses in notes or messages. This makes expenses difficult to find, manage, and summarize. My project gives the model a small set of safe actions for storing and reviewing expenses. It cannot choose a file, run a command, or access the internet.
+The model can work with expense data, but it cannot choose a file, run a command, access the internet, or perform an unlimited action.
 
-### Main point
-
-The problem is not only storing expenses. The server must also limit what an AI client is allowed to do.
-
-### Time check
-
-Move to slide 3 by `0:40`.
-
-If you are late, remove this sentence:
-
-> This makes expenses difficult to find, manage, and summarize.
+The goal is to make expense tracking simple while keeping the MCP server safe.
 
 ## 0:40-1:10 - Architecture
 
-### Show
-
-Show slide 3 and point from left to right.
+The project follows one clear path:
 
 ```text
 MCP Client
@@ -73,45 +24,33 @@ MCP Client
 -> data/expenses.csv
 ```
 
-### Say
+The MCP client sends a tool request.
 
-> The MCP client sends a tool request. Zod validates the input before the request reaches the expense logic. The selected tool can perform only its defined action. The data logic reads or safely writes one fixed local file: `data/expenses.csv`.
->
-> Categories are cleaned with trim and lowercase. Dates are checked as real calendar dates. Write operations use a queue, and update or delete operations safely replace the CSV file.
+Zod validates the input before it reaches the expense logic. Invalid dates, amounts, IDs, months, and empty values are rejected.
 
-### What each part means
+The selected expense tool can perform only its defined action.
 
-- **MCP Client:** Sends the tool request.
-- **Zod Validation:** Rejects missing, invalid, or unexpected input.
-- **Expense Tool:** Allows one focused action.
-- **Data Logic:** Reads, validates, or safely changes expense rows.
-- **CSV File:** Stores all expenses at one fixed local path.
+The data logic reads or safely writes one fixed local file: `data/expenses.csv`.
 
-Do not explain every TypeScript file. The diagram and this short explanation are enough.
-
-### Time check
-
-Start the live demo by `1:10`.
+Categories are trimmed and changed to lowercase. Dates are checked as real calendar dates. Write operations are placed in a queue to prevent file corruption.
 
 ## 1:10-3:30 - Live Demo
 
-### Introduce the tools
+The server has five tools:
 
-Show slide 4 for about ten seconds.
+- `add_expense`
+- `list_expenses`
+- `get_spending_summary`
+- `update_expense`
+- `delete_expense`
 
-### Say
+Add, update, and delete can change expense data. List and summary are read-only.
 
-> The server has five tools. `add_expense`, `update_expense`, and `delete_expense` can change expense data. `list_expenses` and `get_spending_summary` are read-only. I will now use two normal-language prompts.
+I will use two normal prompts to show the main expense flow.
 
-Switch from the slides to your MCP client or Inspector.
+### Prompt 1
 
-### Prompt 1 - Add an expense
-
-**Target time:** `1:20-2:15`
-
-Rehearsal 1: 4:52
-
-Rehearsal 2: 4:43
+Using the Personal Expense Tracker, add a $25 groceries expense for milk and bread on August 16, 2026.
 
 Expected tool:
 
@@ -128,27 +67,15 @@ Expected input:
 }
 ```
 
-### Point to
+The server validates the amount, category, date, and description.
 
-- `success: true`
-- the new expense ID
-- amount `25`
-- category `groceries`
-- date `2026-08-16`
+It creates a unique UUID and stores the category as lowercase text.
 
-### Say after the result
+The result should contain `success: true` and the new expense.
 
-> The server validated the amount, date, category, and description. It created a unique UUID and saved one expense. The category is stored in lowercase.
+### Prompt 2
 
-The ID changes each time. This is correct because every new expense needs a unique ID.
-
-### Prompt 2 - Find the expense
-
-**Target time:** `2:15-3:10`
-
-Copy this exact prompt from `examples/conversations.md`:
-
-> Using the Personal Expense Tracker, show me my groceries expenses for August 2026.
+Using the Personal Expense Tracker, show me my groceries expenses for August 2026.
 
 Expected tool:
 
@@ -163,34 +90,17 @@ Expected input:
 }
 ```
 
-### Point to
+The list tool uses both filters and returns the matching local expenses.
 
-- the month and category filters
-- the matching expense from prompt 1
-- the result count
-- `truncated: false`
+The result should include the expense added by the first prompt.
 
-The count may be greater than one if you used prompt 1 during rehearsal. That is not an error.
+The exact count may be higher if the add prompt was used during rehearsal.
 
-### Say after the result
-
-> The list tool used the month and category filters. It returned the matching local rows. The output is bounded, so a large file cannot create an unlimited response.
-
-### Close the live section
-
-**Target time:** `3:10-3:30`
-
-### Say
-
-> The other tools use the same validation and fixed storage. Update changes one matching expense ID. Delete removes one matching expense ID. Summary calculates totals without changing the CSV file.
-
-Return to slide 5.
+The list output is bounded, so a large CSV file cannot create an unlimited response.
 
 ### Backup Prompt
 
-Use this only if a primary prompt fails, the client is slow, or you need a fast result.
-
-> Using the Personal Expense Tracker, show how much I spent in August 2026 and which category had the highest total.
+Using the Personal Expense Tracker, show how much I spent in August 2026 and which category had the highest total.
 
 Expected tool:
 
@@ -204,97 +114,64 @@ Expected input:
 }
 ```
 
-The exact total can change after adding expenses. Do not promise a fixed number before running the tool.
+The summary tool reads the local expenses and calculates the total for each category.
+
+The exact total can change after new expenses are added.
+
+Update and delete use the same validation and fixed storage. Update changes one matching expense ID. Delete removes one matching expense ID. Neither tool can access another file.
 
 ## 3:30-4:30 - Next Steps
 
-### Show
+The current version is local and single-user.
 
-Show slide 5.
+Possible future improvements are:
 
-### Say
+- optional encrypted backup
+- clearer spending charts
+- a safe CSV import preview
+- keeping the local mode for privacy and offline use
 
-> The current version is intentionally local and single-user. Possible future improvements are optional encrypted backup, clearer spending charts, and a safe CSV import preview.
->
-> I would keep the local mode because it is useful for privacy and for working without internet access. Every new feature would keep the same strict validation and limited permissions.
+Every new feature should keep the same strict validation and limited permissions.
 
-If you are ahead of time, add:
-
-> I would test new features against damaged CSV data, invalid input, and repeated tool calls before using them with real expenses.
-
-If you are behind time, skip the extra sentence. Do not cut the live demo.
+New features should also be tested against damaged CSV data, invalid input, and repeated tool calls.
 
 ## 4:30-5:00 - Finish
 
-Stay on slide 5.
+The Personal Expense Tracker provides five focused expense tools with strict input validation, safe local storage, bounded output, and limited permissions.
 
-### Say
+It is useful without giving the AI client unnecessary access to files, commands, or the internet.
 
-> The project provides five focused expense tools with strict input validation, safe local storage, bounded output, and limited permissions. It is useful without giving the AI client unnecessary access.
->
-> Thank you. I am ready for questions.
-
-Stop speaking after this. Do not start another tool call.
+Thank you. I am ready for questions.
 
 ## Offline Backup
 
-The MCP server and CSV file work locally. They do not need Wi-Fi after dependencies and Inspector are ready.
+The MCP server and CSV file work locally.
 
-### Prepare before the event
+Before the demo, I will run `npm install` and start MCP Inspector while Wi-Fi is available.
 
-1. Run `npm install` while you have Wi-Fi.
-2. Run `npm run inspect` before the demo.
-3. Keep Inspector and its terminal open.
-4. Confirm that `data/expenses.csv` contains the fixture rows.
-5. Keep this guide available offline.
+If Wi-Fi fails, I can keep using the open Inspector with the local `data/expenses.csv` fixture data.
 
-### If Wi-Fi fails
+The offline backup call is `get_spending_summary` with:
 
-1. Do not close the working Inspector window.
-2. Explain that the expense server uses local storage.
-3. Open Inspector's Tools section.
-4. Select `get_spending_summary`.
-5. Enter:
+```json
+{
+  "month": "2026-08"
+}
+```
 
-   ```json
-   {
-     "month": "2026-08"
-   }
-   ```
-
-6. Run the tool.
-7. Show the result from the local fixture CSV.
-
-This fixtures-only path reads `data/expenses.csv`. It does not need a network request.
-
-## If Something Goes Wrong
-
-- **A call takes more than 15 seconds:** Use the backup prompt.
-- **Inspector disconnects:** Reconnect once. Do not debug for more than 20 seconds.
-- **The list contains repeated groceries rows:** Explain that the add prompt was used during rehearsal.
-- **The CSV is damaged:** Explain that the server fails safely instead of deleting data. Switch to a clean prepared clone.
-- **You are running late:** Shorten the next-steps section. Keep the live demo.
-- **You finish early:** Use the optional next-steps sentence. Do not add a third live tool call.
+This reads the local fixture file and does not need a network request.
 
 ## Rehearsal
 
-Use a timer from the first word until "ready for questions."
+Rehearsal 1: 4:52
 
-| Rehearsal | Total time | Inspector tool time | Result |
-| --- | ---: | ---: | --- |
-| 1 | 4:52 | 5.51 seconds | Both live calls worked. |
-| 2 | 4:43 | 4.74 seconds | Both live calls worked. |
+Rehearsal 2: 4:43
 
-Both rehearsals used a disposable clone. The main fixture CSV was not changed. Both rehearsals stayed under five minutes.
+Both live tool calls worked in both rehearsals.
 
-## Final Checklist
+Both rehearsals were under five minutes.
 
-- Slides are open on slide 1.
-- MCP Inspector is connected.
-- All five tools are visible.
-- The two exact live prompts are ready.
-- The backup prompt is ready.
-- The local fixture CSV is present.
-- The terminal stays open.
-- The timer is ready.
-- The offline backup is ready.
+## Slides
+
+- [Demo slides - PDF](./demo-slides.pdf)
+- [Demo slides - PowerPoint](./demo-slides.pptx)
