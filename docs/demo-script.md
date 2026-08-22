@@ -1,6 +1,5 @@
 # Personal Expense Tracker MCP - Demo Script
 
-This is a simple script for a 3-5 minute demo. Follow it in order. Do not add extra explanations during the live demo.
 
 ## Goal
 
